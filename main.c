@@ -32,28 +32,6 @@ void getStringValue(char caption[], char string[]) {
 }
 
 
-char* replace(const char* str, const char* old_str, const char* new_str) {
-	size_t old_len = strlen(old_str);
-	size_t new_len = strlen(new_str);
-	size_t str_len = strlen(str);
-
-	char* result = malloc(str_len + 1);
-	if (result == NULL) {
-		return NULL;
-	}
-	strcpy(result, str);
-
-	char* pos = result;
-	while ((pos = strstr(pos, old_str)) != NULL) {
-		memmove(pos + new_len, pos + old_len, strlen(pos + old_len) + 1);
-		memcpy(pos, new_str, new_len);
-		pos += new_len;
-	}
-
-	return result;
-}
-
-
 void anatoly_1() {
 	char string[255];
 
@@ -121,17 +99,28 @@ void anatoly_4() {
 
 void anatoly_5() {
 	char string[255] = {"\0"};
-	char string_1[255] = {"\0"};
-	char string_2[255] = {"\0"};
+	char stringFirst[255] = {"\0"};
+	char stringSecond[255] = {"\0"};
 
-	getStringValue("String 0", string);
-	getStringValue("String 1", string_1);
-	getStringValue("String 2", string_2);
+	getStringValue("String", string);
+	getStringValue("String 1", stringFirst);
+	getStringValue("String 2", stringSecond);
 
-	char* newString = replace(string, string_1, string_2);
+	size_t stringLen = strlen(string);
+	size_t stringFirstLen = strlen(stringFirst);
+	size_t stringSecondLen = strlen(stringSecond);
 
-	printf("\nResult: ");
-	printf("%s", newString);
+	char* result = malloc(stringLen + 1);
+	strcpy(result, string);
+
+	char* pos = result;
+	while ((pos = strstr(pos, stringFirst)) != NULL) {
+		memmove(pos + stringSecondLen, pos + stringFirstLen, strlen(pos + stringFirstLen) + 1);
+		memcpy(pos, stringSecond, stringSecondLen);
+		pos += stringSecondLen;
+	}
+
+	printf("\nResult: %s", result);
 }
 
 
